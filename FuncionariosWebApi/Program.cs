@@ -1,4 +1,5 @@
 using FuncionariosWebApi.DataContext;
+using FuncionariosWebApi.Services.Funcionario;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddScoped<IFuncionarioInterface, FuncionarioService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
