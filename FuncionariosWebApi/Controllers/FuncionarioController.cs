@@ -21,5 +21,11 @@ namespace FuncionariosWebApi.Controllers
             ServiceResponse<List<FuncionarioModel>> serviceResponse = await _funcionarioInterface.CreateFuncionario(novoFuncionario);
             return Ok(serviceResponse);
         }
+
+        [HttpGet]
+        public async Task<ActionResult<ServiceResponse<List<FuncionarioModel>>>> GetFuncionarios()
+        {
+            return Ok(await _funcionarioInterface.GetFuncionarios());
+        }
     }
 }

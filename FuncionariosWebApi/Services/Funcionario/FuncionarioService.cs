@@ -1,5 +1,6 @@
 ﻿using FuncionariosWebApi.DataContext;
 using FuncionariosWebApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace FuncionariosWebApi.Services.Funcionario
@@ -14,7 +15,7 @@ namespace FuncionariosWebApi.Services.Funcionario
 
         public async Task<ServiceResponse<List<FuncionarioModel>>> CreateFuncionario(FuncionarioModel novoFuncionario)
         {
-            ServiceResponse<List<FuncionarioModel>> serviceResponse = new ServiceResponse<List<FuncionarioModel>>(); ; 
+            ServiceResponse<List<FuncionarioModel>> serviceResponse = new ServiceResponse<List<FuncionarioModel>>(); 
             
             try
             {
@@ -53,9 +54,27 @@ namespace FuncionariosWebApi.Services.Funcionario
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<List<FuncionarioModel>>> GetFuncionarios()
+        public async Task<ServiceResponse<List<FuncionarioModel>>> GetFuncionarios()
         {
-            throw new NotImplementedException();
+            ServiceResponse<List<FuncionarioModel>> serviceResponse = new ServiceResponse<List<FuncionarioModel>>();
+
+            try
+            {
+                if(_context.Funcionarios.ToList().Count != 0)
+                {
+                    serviceResponse.Dados = await _context.Funcionarios.ToListAsync();
+                }else
+                {
+                    serviceResponse.Dados = null;
+                    serviceResponse.Sucesso=false;
+                    serviceResponse.Mensagem = "Nenhum dado encontrado!";
+                }
+            }catch(Exception ex)
+            {
+                serviceResponse.Mensagem = ex.Message;
+                serviceResponse.Sucesso = false;
+            }
+            return serviceResponse;
         }
 
         public Task<ServiceResponse<List<FuncionarioModel>>> InativaFuncionario(int id)
